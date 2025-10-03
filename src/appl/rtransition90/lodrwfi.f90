@@ -21,6 +21,7 @@
       USE npar_C
       USE biorb_C
       USE wave_C
+      use grid_C
 !-----------------------------------------------
 !   I n t e r f a c e   B l o c k s
 !-----------------------------------------------
@@ -95,12 +96,17 @@
 
     3 CONTINUE
       READ (69, IOSTAT=IOS) NPYII, NAKYII, EYII, MYII
+      WRITE(501,*) NPYII, NAKYII, EYII, MYII
+
       IF (IOS == 0) THEN
          CALL ALLOC (PA, MYII, 'PA', 'LODRWFI')
          CALL ALLOC (QA, MYII, 'QA', 'LODRWFI')
          CALL ALLOC (RA, MYII, 'RA', 'LODRWFI')
          READ (69) PZY, (PA(I),I=1,MYII), (QA(I),I=1,MYII)
          READ (69) (RA(I),I=1,MYII)
+         
+         !rp(1:) = 0.0d0 
+         !rp(1:myii) = ra(1:myii)
 
          DO J = 1, NWII
             IF (.NOT.(EII(J)<0.0D00 .AND. NPYII==NPII(J) .AND. NAKYII==NAKII(J)&

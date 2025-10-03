@@ -21,6 +21,7 @@
       USE npar_C
       USE biorb_C
       USE wave_C
+      USE grid_C
 !-----------------------------------------------
 !   I n t e r f a c e   B l o c k s
 !-----------------------------------------------
@@ -98,12 +99,15 @@
 
     3 CONTINUE
       READ (69, IOSTAT=IOS) NPYFF, NAKYFF, EYFF, MYFF
+      WRITE(501,*) NPYFF, NAKYFF, EYFF, MYFF
       IF (IOS == 0) THEN
          CALL ALLOC (PA, MYFF, 'PA', 'LODRWFF' )
          CALL ALLOC (QA, MYFF, 'QA', 'LODRWFF' )
          CALL ALLOC (RA, MYFF, 'RA', 'LODRWFF' )
          READ (69) PZY, (PA(I),I=1,MYFF), (QA(I),I=1,MYFF)
          READ (69) (RA(I),I=1,MYFF)
+         !rp(1:) = 0.0d0 
+         !rp(1:myff) = ra(1:myff)
 
          DO J = 1, NWFF
             IF (.NOT.(EFF(J)<0.0D00 .AND. NPYFF==NPFF(J) .AND. NAKYFF==NAKFF(J)&

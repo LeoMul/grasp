@@ -229,18 +229,28 @@
          IF (ABS(FORM) > EPS) THEN
 !
             TA(1) = 0.0D00
+
             DO II = 2, MTP
+               !xx = EVALFF(LEV2) + EAVFF - EVALII(LEV1) - EAVII 
+               !xx = xx* 2.0 * 109737.31569 
+               !if (abs ( abs(xx) - 2326.95) < 1e-1) then 
+               !end if 
+            
 !zou
                TA(II) = (PFII(II,NNII(I))*QFFF(II,NNFF(J))+QFII(II,NNII(I))*&
                   PFFF(II,NNFF(J)))*BJ(II,2)*RP(II)*C/CVAC
+               !write(500,*) RP(II),ta(ii),bj(ii,2)
 !           TA(II) =  (PFII(II,NNII(I))*QFFF(II,NNFF(J)) +
 !    :      QFII(II,NNII(I))*PFFF(II,NNFF(J)))*BJ(II,2)*RP(II)
 !zou
             END DO
             CALL QUAD (VALUE)
             IF (LDBPR(14)) WRITE (99, 322) VALUE
+            !stop
+
             HMAG = -VALUE*(FL + FLP)*(DFKI + DFKJ)*FORM/SQRT(FL*FLP)
-!
+            !write(500,*) 'hello',VALUE,FORM
+            !     
          ENDIF
 !
          IF (LDBPR(12)) WRITE (99, 302) HMAG

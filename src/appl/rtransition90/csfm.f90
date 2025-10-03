@@ -43,6 +43,8 @@
                  ia, ib, j
       REAL(DOUBLE) :: hcoul1, hbab1, hmag1, eps, couvx, coeff, contr
       CHARACTER(LEN=4) :: jlabi, jlabj, jpari, jparj
+
+      real*8 :: xx 
 !-----------------------------------------------------------------------
 !
       EPS = 1.0D-10
@@ -117,6 +119,11 @@
               ENDIF
 !Rasa -- end
             ELSE
+               !xx = EVALFF(LEV2) + EAVFF - EVALII(LEV1) - EAVII 
+               !xx = xx* 2.0 * 109737.31569 
+               !if (abs ( abs(xx) - 2326.95) < 1e-1) then 
+               !   write(500,*) COEFF,COUVX,hmag1
+               !end if 
               contr=HMAG1*COEFF*COUVX
               ASFA = ASFA+HMAG1*COEFF*COUVX
 !Rasa -- start

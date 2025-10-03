@@ -8,7 +8,7 @@
 ! E_ff=    E_cw=EHF()
 ! E_ch=   -E_cw
 !*************************************************************
-      PARAMETER (nwf=120,no=220)
+      PARAMETER (nwf=200,no=220)
       implicit real*8(a-h,o-z)
       DIMENSION pf(no+1),pff(no+1,nwf),rf(no+1),yy2(no+1)
       DIMENSION pg(230),qg(230),rg(230),pgg(230,2)
@@ -50,6 +50,7 @@
       do 4 i=1,nwf
          read(1,end=48) atom,term,line,m,z,e(i),ekin,az(i),&
                         (pff(j+1,i),j=1,m)
+         !write(*,*)
          max(i)=m+1
          if (m+1.gt. nomax) nomax=m+1
 !
@@ -146,7 +147,8 @@
                dpf=(pg(j+1)-pg(j-1))/(rg(j+1)-rg(j-1))
                qg(j)=halfa*(dpa-pqkap*pg(j)/rg(j))
 8           continue
-
+            
+            write(*,*) npy,naky
             write (9) npy,naky,ey,myg
             write (9) az(m),(pg(i),i=1,myg),(qg(i),i=1,myg)
             write (9) (rg(i),i=1,myg)
@@ -168,6 +170,7 @@
             qg(j)=halfa*(dpa-pqkap*pg(j)/rg(j))
 9        continue
 
+      write(*,*) npy,naky
          write (9) npy,naky,ey,myg
          write (9) az(m),(pg(i),i=1,myg),(qg(i),i=1,myg)
          write (9) (rg(i),i=1,myg)

@@ -199,6 +199,13 @@
       WRITE (21, '(A)') 'Peel subshells:'
       WRITE (21, 301) (NP(I),NH(I),I=NCORE + 1,NW)
       WRITE (21, '(A)') 'CSF(s):'
+
+      WRITE (400, '(A)') 'Core subshells:'
+      WRITE (400, 301) (NP(I),NH(I),I=1,NCORE)
+      WRITE (400, '(A)') 'Peel subshells:'
+      WRITE (400, 301) (NP(I),NH(I),I=NCORE + 1,NW)
+      WRITE (400, '(A)') 'CSF(s):'
+
 !
 !   Now write out all CSFs in the initial and final state list
 !
@@ -217,6 +224,7 @@
       IF (LINE(1:2) == ' *') THEN
          NBLOCKI = NBLOCKI + 1
          NCFI(NBLOCKI) = NLINE/3
+         WRITE(401,*) NLINE/3
       ELSE
          NLINE = NLINE + 1
       ENDIF
@@ -227,10 +235,13 @@
          IF (K > 1) GO TO 10
       ENDIF
       WRITE (21, '(A)') LINE(1:K)
+      WRITE (400, '(A)') LINE(1:K)
+
       GO TO 5
    98 CONTINUE
       NBLOCKI = NBLOCKI + 1
       NCFI(NBLOCKI) = NLINE/3
+      WRITE(401,*) NLINE/3
       CLOSE(23)
 
 ! zou
@@ -261,6 +272,8 @@
          IF (K > 1) GO TO 20
       ENDIF
       WRITE (21, '(A)') LINE(1:K)
+      WRITE (400, '(A)') LINE(1:K)
+
       GO TO 15
    99 CONTINUE
       NBLOCKF = NBLOCKF + 1
@@ -274,6 +287,13 @@
       WRITE (6, *) (NCFI(I),I=1,NBLOCKI)
       WRITE (6, *) NBLOCKF
       WRITE (6, *) (NCFF(I),I=1,NBLOCKF)
+
+      WRITE (401, *) NBLOCKI
+      WRITE (401, *) (NCFI(I),I=1,NBLOCKI)
+      WRITE (401, *) NBLOCKF
+      WRITE (401, *) (NCFF(I),I=1,NBLOCKF)
+
+
   301 FORMAT(120(1X,1I2,1A2))
 !
       RETURN

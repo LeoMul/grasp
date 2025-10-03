@@ -163,6 +163,7 @@
                STATUS='OLD')
          ENDIF
          IF (LSAME) NAME(1) = NAME(2)
+         write(330,*) 'lsame = ',lsame
          READ (68, IOSTAT=IOS) G92MIX
          IF (IOS/=0 .OR. G92MIX/='G92MIX') THEN
             WRITE (*, *) 'Not a GRASP mixing file'
@@ -307,6 +308,8 @@
                         OMEGA = -ET(M)
                         ARGU = OMEGA/C
                         CALL BESSJ (ARGU)
+                        
+                        !write(500,*) 'transition: ', ET(M) * 2.0 * 109737.31569
 !
 !  Calculate oscillator strength between the ASFs
 !

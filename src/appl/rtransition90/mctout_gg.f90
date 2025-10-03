@@ -47,7 +47,7 @@
       REAL(DOUBLE), PARAMETER :: CUTOFF = 1.0D-10
       INTEGER, PARAMETER :: NFILE = 93
       INTEGER, PARAMETER :: NFILE1 = 237
-      INTEGER :: TT ,ss
+      INTEGER :: TT ,ss,gg
 !-----------------------------------------------
 !   L o c a l   V a r i a b l e s
 !-----------------------------------------------
@@ -79,9 +79,15 @@
       IF (AVAIL) RETURN
       WRITE (6, *) 'LK,IOPAR,from MCTOUT'
       WRITE (6, *) LK, IOPAR
+      
 
-      DO I = 1,NBLOCKI 
-         write(330,*) i , NCFI(I), NCFF(I)
+      write(330,*) 'start and end position of initial and final blocks: '
+      DO I = 1,NBLOCKF 
+         if (i.eq. 1) then 
+            write(330,*) i ,1 ,NCFI(I), NCFF(I)
+         else
+            write(330,*) i ,1 ,NCFI(I), NCFF(I)
+         end if
       END DO
             
 !
@@ -118,38 +124,50 @@
                NCFF0 = NCFI(NBLOCKI) + 1
             ELSE
                NCFF0 = NCFI(NBLOCKI) + NCFF(IBLKF-1) + 1
-
             ENDIF
+
+            GG = NCFI(NBLOCKI) + NCFF(IBLKF)
+
+
             write(330,*) '-----------------------------'
+            write(330,*) 'NBLOCKI,NBLOCKF =     ', NBLOCKI,NBLOCKF
             write(330,*) 'double do loop: i,j = ', IBLKI,iblkf
-            write(330,*) 'outer indices:   ',NCFI0,NCFI(IBLKI)
-            write(330,*) 'outer symmetries:',&
+            write(330,*) 'outer indices:        ',NCFI0,NCFI(IBLKI)
+            write(330,*) 'outer symmetries:     ',&
             ITJPO(NCFI0)* ISPAR(NCFI0) ,ITJPO(NCFI(IBLKI))* ISPAR(NCFI(IBLKI))
-            write(330,*) 'inner indices:   ',NCFF0,NCFI(NBLOCKI) + NCFF(IBLKF)
-            write(330,*) 'inner symmetries:',&
+            write(330,*) 'inner indices:        ',NCFF0,NCFI(NBLOCKI) + NCFF(IBLKF)
+            write(330,*) 'inner symmetries:     ',&
             ITJPO(NCFF0)* ISPAR(NCFF0) ,&
             ITJPO(NCFI(NBLOCKI) + NCFF(IBLKF))* ISPAR(NCFI(NBLOCKI) + NCFF(IBLKF))
             
-            SS = NCFF(IBLKF-1)
-            TT = NCFF(IBLKF+1)
-            IF (IBLKF == 1) THEN 
-               SS = 1 
-               TT = NCFF(IBLKF)
-            ELSE 
-               SS = NCFF(IBLKF-1) + 1 
-               TT = NCFF(IBLKF) -1
-            END IF 
+            !SS = NCFF(IBLKF-1)
+            !TT = NCFF(IBLKF+1)
+            !IF (IBLKF == 1) THEN 
+            !   SS = 1 
+            !   TT = NCFF(IBLKF)
+            !ELSE 
+            !   SS = NCFF(IBLKF-1) + 1 
+            !   TT = NCFF(IBLKF) -1
+            !END IF 
 
-            write(330,*) 'tnner indices:   ',SS,TT
-            write(330,*) 'tnner symmetries:',&
-            ITJPO(SS)* ISPAR(SS) ,&
-            ITJPO(TT)* ISPAR(TT)
+            !write(330,*) 'Tnner indices:        ',SS,TT
+            !write(330,*) 'tnner symmetries:     ',&
+            !ITJPO(SS)* ISPAR(SS) ,&
+            !ITJPO(TT)* ISPAR(TT)
 
-            !ITJPO(NCFF0) * ISPAR(NCFI(NCFI(NBLOCKI) + NCFF(IBLKF)))
-            NCFF0 = SS 
+            
+            !NCFF0 = SS 
+            write(404,*) 'outer symmetries:     ',&
+            ITJPO(NCFI0)* ISPAR(NCFI0) ,ITJPO(NCFI(IBLKI))* ISPAR(NCFI(IBLKI))
+            write(404,*) 'inner indices:        ',NCFF0,NCFI(NBLOCKI) + NCFF(IBLKF)
+            write(404,*) 'inner symmetries:     ',&
+            ITJPO(NCFF0)* ISPAR(NCFF0) ,&
+            ITJPO(NCFI(NBLOCKI) + NCFF(IBLKF))* ISPAR(NCFI(NBLOCKI) + NCFF(IBLKF))
+            WRITE (404, 301) 0 , LK, IOPAR
+            WRITE (404,   *) IBLKI,IBLKF
 
             DO IC = NCFI0, NCFI(IBLKI)
-               DO IR = NCFF0, TT
+               DO IR = NCFF0, GG
                !DO IR = SS,TT
 
 !
@@ -185,6 +203,7 @@
                            ENDIF
                            LABEL(NCR) = IA*KEYORB + IA
                            COEFF(NCR) = TSHELL(IA)
+                           WRITE(404,*) TSHELL(IA)
                         END DO
                      ELSE
                         IF (ABS(TSHELL(1)) > CUTOFF) THEN
@@ -197,6 +216,7 @@
                            ENDIF
                            LABEL(NCR) = IA*KEYORB + IB
                            COEFF(NCR) = TSHELL(1)
+                           WRITE(404,*) TSHELL(1)
                         ENDIF
                      ENDIF
                   ENDIF
@@ -238,6 +258,8 @@
       RETURN
 !
   301 FORMAT(/,/,/,1X,I8,' MCT coefficients generated for rank ',I2,&
+         ' and parity ',I2,/,/)
+  302 FORMAT(/,/,/,1X,' MCT coefficients generating for rank ',I2,&
          ' and parity ',I2,/,/)
       RETURN
 !

@@ -107,7 +107,7 @@ set(CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR})
 #
 #     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static-libgfortran")
 #
-set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fno-automatic")
+set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fno-automatic -fallow-argument-mismatch -fcheck=all")
 
 message("Compiler flags etc. for this GRASP build:")
 message("* CMAKE_BUILD_TYPE:                ${CMAKE_BUILD_TYPE}")
@@ -136,7 +136,7 @@ add_subdirectory("src/lib/librang90")
 
 # GRASP application programs
 add_subdirectory("src/appl/HF")
-add_subdirectory("src/appl/jj2lsj90")
+add_subdirectory("src/appl/jj2lsj90_2025")
 add_subdirectory("src/appl/jjgen90")
 add_subdirectory("src/appl/rangular90")
 add_subdirectory("src/appl/rbiotransform90")
